@@ -10,6 +10,11 @@ public class Drink extends Product {
 		this.isHasStraw = isHasStraw;
 	}
 
+	public Drink(Drink drink) {
+		super(drink.getName(), drink.getPrice(), drink.getKcal());
+		this.isHasStraw = drink.isHasStraw();
+	}
+
 	public boolean isHasStraw() {
 		return isHasStraw;
 	}

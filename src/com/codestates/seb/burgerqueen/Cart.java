@@ -80,18 +80,28 @@ public class Cart {
 
 	public void addToCart(int productId) {
 		Product product = productRepository.findById(productId);
-		chooseOption(product);
 
+		Product newProduct;
 		if (product instanceof Hamburger) {
-			Hamburger hamburger = (Hamburger)product;
+			newProduct = new Hamburger((Hamburger)product);
+		} else if (product instanceof Side) {
+			newProduct = new Side((Side)product);
+		} else {
+			newProduct = new Drink((Drink)product);
+		}
+
+		chooseOption(newProduct);
+
+		if (newProduct instanceof Hamburger) {
+			Hamburger hamburger = (Hamburger)newProduct;
 			if (hamburger.isBurgerSet()) {
-				product = composeSet(hamburger);
+				newProduct = composeSet(hamburger);
 			}
 		}
 
 		Product[] newItems = new Product[items.length + 1];
 		System.arraycopy(items, 0, newItems, 0, items.length);
-		newItems[newItems.length - 1] = product;
+		newItems[newItems.length - 1] = newProduct;
 		items = newItems;
 
 		System.out.printf("%s를(을) 장바구니에 담았습니다.\n", product.getName());
@@ -129,19 +139,21 @@ public class Cart {
 
 		String sideId = scanner.nextLine();
 		Side side = (Side)productRepository.findById(Integer.parseInt(sideId));
-		chooseOption(side);
+		Side newSide = new Side(side);
+		chooseOption(newSide);
 
 		System.out.println("음료를 골라주세요");
 		menu.printDrinks(false);
 
 		String drinkId = scanner.nextLine();
 		Drink drink = (Drink)productRepository.findById(Integer.parseInt(drinkId));
-		chooseOption(drink);
+		Drink newDrink = new Drink(drink);
+		chooseOption(newDrink);
 
 		String name = hamburger.getName() + "세트";
 		int price = hamburger.getBurgerSetPrice();
 		int kcal = hamburger.getKcal() + side.getKcal() + drink.getKcal();
 
-		return new BurgerSet(name, price, kcal, hamburger, side, drink);
+		return new BurgerSet(name, price, kcal, hamburger, newSide, newDrink);
 	}
 }
