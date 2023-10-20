@@ -33,7 +33,7 @@ public class Cart {
 		scanner.nextLine();
 	}
 
-	private void printCartItemDetails() {
+	protected void printCartItemDetails() {
 		for (Product product : items) {
 			if (product instanceof BurgerSet) {
 				BurgerSet burgerSet = (BurgerSet)product;
@@ -70,7 +70,7 @@ public class Cart {
 		}
 	}
 
-	private int calculateTotalPrice() {
+	protected int calculateTotalPrice() {
 		int totalPrice = 0;
 		for (Product product : items) {
 			totalPrice += product.getPrice();
