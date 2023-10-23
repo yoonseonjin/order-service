@@ -1,32 +1,19 @@
 package com.codestates.seb.burgerqueen;
 
-import com.codestates.seb.burgerqueen.discount.discountCondition.CozDiscountCondition;
-import com.codestates.seb.burgerqueen.discount.discountCondition.KidDiscountCondition;
+import com.codestates.seb.burgerqueen.discount.Discount;
 
 public class Order {
 	private Cart cart;
+	private Discount discount;
 
-	public Order(Cart cart) {
+	public Order(Cart cart, Discount discount) {
 		this.cart = cart;
+		this.discount = discount;
 	}
 
 	public void makeOrder() {
-		CozDiscountCondition cozDiscountCondition = new CozDiscountCondition();
-		KidDiscountCondition kidDiscountCondition = new KidDiscountCondition();
-
-		cozDiscountCondition.checkDiscountCondition();
-		kidDiscountCondition.checkDiscountCondition();
-
 		int totalPrice = cart.calculateTotalPrice();
-
-		int finalPrice = totalPrice;
-
-		if (cozDiscountCondition.isSatisfied()) {
-			finalPrice = cozDiscountCondition.applyDiscount(finalPrice);
-		}
-		if (kidDiscountCondition.isSatisfied()) {
-			finalPrice = kidDiscountCondition.applyDiscount(finalPrice);
-		}
+		int finalPrice = discount.discount(totalPrice);
 
 		System.out.println("주문이 완료되었습니다.");
 		System.out.println("주문 내역은 다음과 같습니다.");
